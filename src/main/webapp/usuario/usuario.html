@@ -22,6 +22,9 @@
         <li class="nav-item active">
           <a class="nav-link" href="#">Inicio <span class="sr-only">(current)</span></a>
         </li>
+        <li class="nav-item active">
+          <a href="#" class="nav-link">Login</a>
+        </li>
 
       </ul>
       <form class="form-inline my-2 my-lg-0" action="/usuario">
@@ -42,7 +45,43 @@
             <p class="card-text">Um pouco sobre a pessoa</p>
           </div>
           <ul class="list-group list-group-flush">
-            <li class="list-group-item">Fazer um Up!</li>
+            <li class="list-group-item">
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                Fazer um Up!
+              </button>
+
+              <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalCenterTitle">Up de arquivo</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <form action="/enviar_arquivo" method="POST">
+                      <div class="modal-body">
+                        <div class="input-group mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroupFileAddon01">Up!</span>
+                          </div>
+                          <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="inputGroupFile01"
+                              aria-describedby="inputGroupFileAddon01">
+                            <label class="custom-file-label" for="inputGroupFile01">Escolha um Arquivo</label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </li>
             <li class="list-group-item">Seguindo</li>
             <li class="list-group-item">Seguidores</li>
           </ul>
@@ -68,28 +107,60 @@
                 <td>Arquivo de texto</td>
                 <td>128kB</td>
                 <td>txt</td>
-                <td></td>
+                <td>
+                  <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">Opções</button>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Apagar</a>
+                    <a class="dropdown-item" href="#">Compartilhar</a>
+                    <a class="dropdown-item" href="#">Baixar</a>
+                  </div>
+                </td>
               </tr>
               <tr>
                 <td>2</td>
                 <td>Imagem</td>
                 <td>2mB</td>
                 <td>jpeg</td>
-                <td></td>
+                <td>
+                  <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">Opções</button>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Apagar</a>
+                    <a class="dropdown-item" href="#">Compartilhar</a>
+                    <a class="dropdown-item" href="#">Baixar</a>
+                  </div>
+                </td>
               </tr>
               <tr>
                 <td>3</td>
                 <td>Arquivo de audio</td>
                 <td>3,5mB</td>
                 <td>mp3</td>
-                <td></td>
+                <td>
+                  <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">Opções</button>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Apagar</a>
+                    <a class="dropdown-item" href="#">Compartilhar</a>
+                    <a class="dropdown-item" href="#">Baixar</a>
+                  </div>
+                </td>
               </tr>
               <tr>
                 <td>4</td>
                 <td>Arquivo de video</td>
                 <td>1,3GB</td>
                 <td>mkv</td>
-                <td></td>
+                <td>
+                  <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">Opções</button>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Apagar</a>
+                    <a class="dropdown-item" href="#">Compartilhar</a>
+                    <a class="dropdown-item" href="#">Baixar</a>
+                  </div>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -100,7 +171,13 @@
   </div>
   </div>
 
-  <script src="../../resources/static/js/bootstrap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+    integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+  <script src="../../resources/static/js/bootstrap.js"></script>
 </body>
 
 </html>

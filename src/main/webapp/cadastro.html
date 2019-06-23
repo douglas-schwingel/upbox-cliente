@@ -24,6 +24,9 @@
                     <a class="nav-link" href="#">Inicio <span class="sr-only">(current)</span></a>
                 </li>
 
+                <li class="nav-item active">
+                    <a href="#" class="nav-link">Login</a>
+                </li>
             </ul>
             <form class="form-inline my-2 my-lg-0" action="/usuario">
                 <input class="form-control mr-sm-2" type="search" name="search" placeholder="Search"
@@ -43,7 +46,8 @@
             </div>
             <div class="form-group">
                 <label for="email">E-mail:</label>
-                <input required type="email" name="email" id="id" class="form-control" placeholder="exemplo@exemplo.com">
+                <input required type="email" name="email" id="id" class="form-control"
+                    placeholder="exemplo@exemplo.com">
                 <small class="form-text text-muted" id="emailHelp">Nunca vamos compartilhar seu email com ninguém, fique
                     tranquilo!</small>
             </div>
@@ -104,7 +108,8 @@
                         </select>
                     </div>
                     <div class="col-md-2 mb-2">
-                        <input required type="number" name="ano" id="ano" min="1930" max="2019"  placeholder="2000" class="form-control">
+                        <input required type="number" name="ano" id="ano" min="1930" max="2019" placeholder="2000"
+                            class="form-control">
                     </div>
                 </div>
             </div>
@@ -114,7 +119,8 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text">@</span>
                     </div>
-                    <input required type="text" name="username" id="username" placeholder="silvajoao96" class="form-control">
+                    <input required type="text" name="username" id="username" placeholder="silvajoao96"
+                        class="form-control">
                 </div>
                 <small class="form-text text-muted" id="usernameHelp">Fica esperto: Só pode ter letras (maiúsculas e
                     minúsculas), números e traços("-")</small>
@@ -122,12 +128,15 @@
             <div class="form-group">
                 <label for="senha">Senha:</label>
                 <input required type="password" name="senha" id="senha" placeholder="*******" class="form-control">
-                <small class="form-text text-muted" id="senhaHelp">Não pode ser muito fácil... Tem que ter pelo menos: 1 letra maiúscula, 1 letra minúscula e 1 número</small>
+                <small class="form-text text-muted" id="senhaHelp">Não pode ser muito fácil... Tem que ter pelo menos: 1
+                    letra maiúscula, 1 letra minúscula e 1 número</small>
             </div>
             <div class="form-group">
-                    <label for="confirmacao">Confirme a senha:</label>
-                    <input required type="password" name="confirmacao" id="confirmacao" placeholder="*******" class="form-control">
-                    <small class="form-text text-muted" id="confirmacaoHelp">Aqui tem que botar a mesma senha de antes! Não vai errar, ein!</small>
+                <label for="confirmacao">Confirme a senha:</label>
+                <input required type="password" name="confirmacao" id="confirmacao" placeholder="*******"
+                    class="form-control">
+                <small class="form-text text-muted" id="confirmacaoHelp">Aqui tem que botar a mesma senha de antes! Não
+                    vai errar, ein!</small>
             </div>
             <div class="form-group">
                 <label for="g-recaptcha">Você é um ser humaninho?</label>
@@ -137,7 +146,7 @@
             <button class="btn btn-outline-primary" type="submit">Up!</button>
         </form>
     </div>
-    
+
     <script src="../resources/static/js/bootstrap.min.js"></script>
 </body>
 
