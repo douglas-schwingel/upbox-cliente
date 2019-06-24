@@ -2764,7 +2764,7 @@
   };
   var AttachmentMap$1 = {
     AUTO: 'auto',
-    TOP: 'top',
+    TOP: 'templates.top.html',
     RIGHT: 'right',
     BOTTOM: 'bottom',
     LEFT: 'left'
@@ -2777,7 +2777,7 @@
     delay: 0,
     html: false,
     selector: false,
-    placement: 'top',
+    placement: 'templates.top.html',
     offset: 0,
     container: false,
     fallbackPlacement: 'flip',
