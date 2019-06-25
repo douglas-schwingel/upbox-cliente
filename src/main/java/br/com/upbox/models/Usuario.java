@@ -1,19 +1,41 @@
 package br.com.upbox.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.bson.types.ObjectId;
+
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.UUID;
 
-public class Usuario {
+import org.springframework.data.annotation.Id;
+
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Usuario implements Serializable {
+
+    @Id
+    private ObjectId id;
 
     private UUID uuid;
     private String nome;
     private String email;
-    private LocalDate dataNascimento;
+//
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+//    private LocalDate dataNascimento;
     private int dia;
     private int mes;
     private int ano;
     private String username;
     private String senha;
+
+    public ObjectId getId() {
+        return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
+    }
 
     public int getDia() {
         return dia;
@@ -56,13 +78,13 @@ public class Usuario {
     }
 
 
-    public LocalDate getDataNascimento() {
-        return dataNascimento;
-    }
-
-    public void setDataNascimento(LocalDate dataNascimento) {
-        this.dataNascimento = dataNascimento;
-    }
+//    public LocalDate getDataNascimento() {
+//        return dataNascimento;
+//    }
+//
+//    public void setDataNascimento(LocalDate dataNascimento) {
+//        this.dataNascimento = dataNascimento;
+//    }
 
     public String getUsername() {
         return username;
@@ -86,5 +108,10 @@ public class Usuario {
 
     public void setUuid(UUID uuid) {
         this.uuid = uuid;
+    }
+
+    public Usuario criarId() {
+        this.id = new ObjectId();
+        return this;
     }
 }

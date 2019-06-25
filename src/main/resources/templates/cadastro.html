@@ -23,27 +23,27 @@
                     tranquilo!
                 </small>
             </div>
-            <div class="form-group">
-                <label for="dataNascimento">Data de Nascimento:</label>
-                <div class="form-row" id="dataNascimento">
-                    <div class="col-md-1 mb-1">
-                        <select required id="dia" name="dia" class="form-control" th:field="*{dia}">
-                            <option selected value="0">Dia</option>
-                            <option th:each="dia : ${dias}" th:value="${dia}" th:text="${dia}"></option>
-                        </select>
-                    </div>
-                    <div class="col-md-6 mb-6">
-                        <select required id="mes" name="mes" class="form-control" th:field="*{mes}">
-                            <option selected value="0">Mês</option>
-                            <option th:each="mes : ${meses}" th:value="${mes.key}" th:text="${mes.value}"></option>
-                        </select>
-                    </div>
-                    <div class="col-md-2 mb-2">
-                        <input required type="number" name="ano" id="ano" min="1930" max="2019" placeholder="2000"
-                               class="form-control" th:field="*{ano}">
-                    </div>
-                </div>
-            </div>
+<!--            <div class="form-group">-->
+<!--                <label for="dataNascimento">Data de Nascimento:</label>-->
+<!--                <div class="form-row" id="dataNascimento">-->
+<!--                    <div class="col-md-1 mb-1">-->
+<!--                        <select required id="dia" name="dia" class="form-control" th:field="*{dia}">-->
+<!--                            <option selected value="0">Dia</option>-->
+<!--                            <option th:each="dia : ${dias}" th:value="${dia}" th:text="${dia}"></option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                    <div class="col-md-6 mb-6">-->
+<!--                        <select required id="mes" name="mes" class="form-control" th:field="*{mes}">-->
+<!--                            <option selected value="0">Mês</option>-->
+<!--                            <option th:each="mes : ${meses}" th:value="${mes.key}" th:text="${mes.value}"></option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                    <div class="col-md-2 mb-2">-->
+<!--                        <input required type="number" name="ano" id="ano" min="1930" max="2019" placeholder="2000"-->
+<!--                               class="form-control" th:field="*{ano}">-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
             <div class="form-group">
                 <label for="username">Username:</label>
                 <div class="input-group">
