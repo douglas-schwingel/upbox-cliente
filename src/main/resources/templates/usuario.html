@@ -13,7 +13,7 @@
                     <img src="#" alt="Foto do usuario">
                 </object>
                 <div class="card-body">
-                    <p class="card-text" th:text="${usuario.username}">@username</p>
+                    <p class="card-text" th:text="|@${usuario.username}|">@username</p>
                 </div>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">
