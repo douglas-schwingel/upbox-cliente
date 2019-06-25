@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 public class LoginController {
     private static final Logger logger = Logger.getLogger(LoginController.class.getName());
 
-    @GetMapping
+    @GetMapping("/login")
     public String login() {
         logger.log(Level.INFO, "entrando na pagina de login");
         return "login-form";
