@@ -11,6 +11,10 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.bson.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -22,24 +26,23 @@ import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Controller
 public class UsuarioController {
-    private static final Logger logger = Logger.getLogger(UsuarioController.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(UsuarioController.class);
+    private static final Marker marker = MarkerFactory.getMarker("usuario-controller");
     private static final String URL_API = "http://localhost:9000/usuario";
     private static final String CONTENT_TYPE = "application/json";
 
     @GetMapping("/")
     public String index() {
-        logger.log(Level.INFO, "entrando no /index");
+        logger.info(marker, "entrando no /index");
         return "index";
     }
 
     @GetMapping("/cadastro")
     public ModelAndView cadastro() {
-        logger.log(Level.INFO, "entrando no /cadastro");
+        logger.info(marker, "entrando no /cadastro");
         ModelAndView view = new ModelAndView("cadastro");
         Usuario usuario = new Usuario();
         view.addObject("usuario", usuario);
@@ -47,10 +50,10 @@ public class UsuarioController {
     }
 
     @PostMapping("/envia_usuario")
-    public ModelAndView envia_usuario(@ModelAttribute("usuario") Usuario usuario) {
+    public ModelAndView enviaUsuario(@ModelAttribute("usuario") Usuario usuario) {
         String usuarioComoString = preparaJsonString(usuario);
         Usuario usuarioRetornado = conectaComAAPI(usuarioComoString, new Post());
-        logger.log(Level.INFO, "Usuario {0} adicionado com sucesso!", usuarioRetornado.getUsername());
+        logger.info(marker, "Usuario {} adicionado com sucesso!", usuarioRetornado.getUsername());
         ModelAndView view = new ModelAndView("redirect:/usuario/" + usuario.getUsername());
         view.addObject("usuario", usuario);
         return view;
@@ -68,9 +71,8 @@ public class UsuarioController {
     public ModelAndView removerUsuario(@ModelAttribute("usuario") Usuario usuario) {
         ModelAndView view = new ModelAndView("redirect:/");
         String usuarioComoString = preparaJsonString(usuario);
-        logger.log(Level.INFO, "Usuario enviado: {0}", usuarioComoString);
         Usuario usuarioRetornado = conectaComAAPI(usuarioComoString, new Delete());
-        logger.log(Level.INFO, "Usuario {0} removido com sucesso!", usuarioRetornado.getUsername());
+        logger.info(marker, "Usuario {} removido com sucesso!", usuarioRetornado.getUsername());
         view.addObject("usuario", usuarioRetornado);
         return view;
     }
@@ -89,7 +91,7 @@ public class UsuarioController {
 
     private Usuario conectaComAAPI(String usuarioComoString, Requisicao requisicao) {
         try {
-            logger.log(Level.INFO, "Usuario como String: {0}", usuarioComoString);
+            logger.info(marker, "Usuario como String: {}", usuarioComoString);
             CloseableHttpClient httpClient = HttpClientBuilder.create().build();
             CloseableHttpResponse response = requisicao.executa(URL_API, usuarioComoString, CONTENT_TYPE, httpClient);
             HttpEntity entity = response.getEntity();
@@ -97,7 +99,7 @@ public class UsuarioController {
             httpClient.close();
             return usuarioRecebido;
         } catch (IOException e) {
-            logger.log(Level.WARNING, "Erro: {0}", e);
+            logger.error(marker, "Erro: {}", e);
             return null;
         }
     }

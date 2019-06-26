@@ -7,14 +7,18 @@ import org.bson.codecs.CollectibleCodec;
 import org.bson.codecs.DecoderContext;
 import org.bson.codecs.EncoderContext;
 import org.mindrot.jbcrypt.BCrypt;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 
 import java.time.Instant;
 import java.util.UUID;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class UsuarioCodec implements CollectibleCodec<Usuario> {
-    private static final Logger logger = Logger.getLogger(UsuarioCodec.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(UsuarioCodec.class);
+    private static final Marker marker = MarkerFactory.getMarker("usuario-codec");
 
     private Codec<Document> codec;
 
@@ -35,7 +39,7 @@ public class UsuarioCodec implements CollectibleCodec<Usuario> {
 
     @Override
     public BsonValue getDocumentId(Usuario usuario) {
-        if(!documentHasId(usuario)) logger.log(Level.WARNING,"Usuário não tem ID");
+        if(!documentHasId(usuario)) logger.error(marker,"Usuário {} não tem ID", usuario.getUsername());
         return new BsonString(usuario.getId().toHexString());
     }
 
