@@ -29,6 +29,5 @@ dependencies {
 //	compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.9'
 	compile group: 'org.mindrot', name: 'jbcrypt', version: '0.4'
 
-
 }
 
