@@ -1,11 +1,13 @@
 package br.com.upbox.controller;
 
+import br.com.upbox.ftp.FtpConnectionFactory;
 import br.com.upbox.models.Usuario;
 import br.com.upbox.requisicoes.Delete;
 import br.com.upbox.requisicoes.Get;
 import br.com.upbox.requisicoes.Post;
 import br.com.upbox.requisicoes.Requisicao;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.net.ftp.FTPClient;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -16,10 +18,8 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.constraints.NotNull;
@@ -77,6 +77,20 @@ public class UsuarioController {
         return view;
     }
 
+    @PostMapping("/envia_arquivo")
+    public String enviaArquivos(@RequestParam("arquivo")MultipartFile arquivo,
+                                      @RequestParam("username")String username,
+                                      @RequestParam("password")String password) throws IOException {
+        FTPClient ftpClient = new FtpConnectionFactory().conecta(username, password, getPathname(username));
+        InputStream inputStream = arquivo.getInputStream();
+        boolean sucesso = ftpClient.storeFile(getPathname(username), inputStream);
+        if (sucesso) {
+            logger.info(marker, "Arquivo inserido");
+        }
+        return "usuario/"+username;
+    }
+
+
 //    ****** Métodos auxiliares
 
     private String preparaJsonString(@ModelAttribute("usuario") Usuario usuario) {
@@ -106,6 +120,14 @@ public class UsuarioController {
 
     private Usuario getUsuario(InputStream content) throws IOException {
         return new ObjectMapper().readValue(content, Usuario.class);
+    }
+
+    private String getPathname(String nomeArquivo, String owner) {
+        return System.getProperty("user.home") + "/" + owner + "/" + nomeArquivo;
+    }
+
+    private String getPathname(String owner) {
+        return System.getProperty("user.home") + "/" + owner;
     }
 
 }

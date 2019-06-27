@@ -32,7 +32,9 @@
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
-                                    <form action="/enviar_arquivo" method="POST">
+                                    <form action="/envia_arquivo" method="POST" enctype="multipart/form-data">
+                                        <input th:type="hidden" name="username" th:value="${usuario.username}">
+                                        <input th:type="hidden" name="password" th:value="${usuario.senha}">
                                         <div class="modal-body">
                                             <div class="input-group mb-3">
                                                 <div class="input-group-prepend">
@@ -42,7 +44,7 @@
                                                 <div class="custom-file">
                                                     <input type="file" class="custom-file-input"
                                                            id="inputGroupFile01"
-                                                           aria-describedby="inputGroupFileAddon01">
+                                                           aria-describedby="inputGroupFileAddon01" name="arquivo">
                                                     <label class="custom-file-label" for="inputGroupFile01">Escolha
                                                         um Arquivo</label>
                                                 </div>
