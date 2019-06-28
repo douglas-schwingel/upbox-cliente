@@ -1,13 +1,14 @@
 package br.com.upbox.controller;
 
 import br.com.upbox.ftp.FtpConnectionFactory;
+import br.com.upbox.ftp.FtpUtil;
 import br.com.upbox.models.Usuario;
 import br.com.upbox.requisicoes.Delete;
 import br.com.upbox.requisicoes.Get;
 import br.com.upbox.requisicoes.Post;
 import br.com.upbox.requisicoes.Requisicao;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPFile;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -25,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -33,6 +35,8 @@ public class UsuarioController {
     private static final Marker marker = MarkerFactory.getMarker("usuario-controller");
     private static final String URL_API = "http://localhost:9000/usuario";
     private static final String CONTENT_TYPE = "application/json";
+
+    private FtpConnectionFactory fsf;
 
     @GetMapping("/")
     public String index() {
@@ -52,9 +56,12 @@ public class UsuarioController {
     @PostMapping("/envia_usuario")
     public ModelAndView enviaUsuario(@ModelAttribute("usuario") Usuario usuario) {
         String usuarioComoString = preparaJsonString(usuario);
-        Usuario usuarioRetornado = conectaComAAPI(usuarioComoString, new Post());
+        conectaComAAPI(usuarioComoString, new Post());
+        Usuario usuarioRetornado = conectaComAAPI(usuario.getUsername(), new Get());
+        FtpUtil.getArquivos(usuarioRetornado);
         logger.info(marker, "Usuario {} adicionado com sucesso!", usuarioRetornado.getUsername());
-        ModelAndView view = new ModelAndView("redirect:/usuario/" + usuario.getUsername());
+//        TODO solucionar o recurso
+        ModelAndView view = new ModelAndView("/usuario/{username}");
         view.addObject("usuario", usuario);
         return view;
     }
@@ -63,6 +70,8 @@ public class UsuarioController {
     public ModelAndView buscaUsuario(@NotNull @PathVariable("username") String username) {
         ModelAndView view = new ModelAndView("usuario");
         Usuario usuarioRetornado = conectaComAAPI(username, new Get());
+        List<FTPFile> listaDeArquivos = FtpUtil.getArquivos(usuarioRetornado);
+        view.addObject("lista", listaDeArquivos);
         view.addObject("usuario", usuarioRetornado);
         return view;
     }
@@ -72,26 +81,27 @@ public class UsuarioController {
         ModelAndView view = new ModelAndView("redirect:/");
         String usuarioComoString = preparaJsonString(usuario);
         Usuario usuarioRetornado = conectaComAAPI(usuarioComoString, new Delete());
+        FtpUtil.removeUsuario(usuarioRetornado);
         logger.info(marker, "Usuario {} removido com sucesso!", usuarioRetornado.getUsername());
         view.addObject("usuario", usuarioRetornado);
         return view;
     }
 
     @PostMapping("/envia_arquivo")
-    public String enviaArquivos(@RequestParam("arquivo")MultipartFile arquivo,
-                                      @RequestParam("username")String username,
-                                      @RequestParam("password")String password) throws IOException {
-        FTPClient ftpClient = new FtpConnectionFactory().conecta(username, password, getPathname(username));
-        InputStream inputStream = arquivo.getInputStream();
-        boolean sucesso = ftpClient.storeFile(getPathname(username), inputStream);
+    public String enviaArquivos(@RequestParam("arquivo") MultipartFile arquivo,
+                                @RequestParam("username") String username,
+                                @RequestParam("password") String password) throws IOException {
+        boolean sucesso = FtpUtil.storeFiles(arquivo, username, password);
         if (sucesso) {
             logger.info(marker, "Arquivo inserido");
         }
-        return "usuario/"+username;
+        return "usuario/" + username;
     }
 
 
-//    ****** Métodos auxiliares
+
+
+    //    ****** Métodos auxiliares
 
     private String preparaJsonString(@ModelAttribute("usuario") Usuario usuario) {
         Document document = new Document();
@@ -122,12 +132,6 @@ public class UsuarioController {
         return new ObjectMapper().readValue(content, Usuario.class);
     }
 
-    private String getPathname(String nomeArquivo, String owner) {
-        return System.getProperty("user.home") + "/" + owner + "/" + nomeArquivo;
-    }
 
-    private String getPathname(String owner) {
-        return System.getProperty("user.home") + "/" + owner;
-    }
 
 }

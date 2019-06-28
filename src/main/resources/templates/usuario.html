@@ -88,62 +88,11 @@
                     <th scope="col">Opções</th>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Arquivo de texto</td>
-                        <td>128kB</td>
-                        <td>txt</td>
-                        <td>
-                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                    data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">Opções
-                            </button>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="#">Apagar</a>
-                                <a class="dropdown-item" href="#">Compartilhar</a>
-                                <a class="dropdown-item" href="#">Baixar</a>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Imagem</td>
-                        <td>2mB</td>
-                        <td>jpeg</td>
-                        <td>
-                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                    data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">Opções
-                            </button>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="#">Apagar</a>
-                                <a class="dropdown-item" href="#">Compartilhar</a>
-                                <a class="dropdown-item" href="#">Baixar</a>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Arquivo de audio</td>
-                        <td>3,5mB</td>
-                        <td>mp3</td>
-                        <td>
-                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                    data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">Opções
-                            </button>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="#">Apagar</a>
-                                <a class="dropdown-item" href="#">Compartilhar</a>
-                                <a class="dropdown-item" href="#">Baixar</a>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>Arquivo de video</td>
-                        <td>1,3GB</td>
-                        <td>mkv</td>
+                    <tr th:each="arquivo, itStat : ${lista}" th:start="1">
+                        <td th:text="${itStat.index + 1}">1</td>
+                        <td th:text="${arquivo.name}">Arquivo de texto</td>
+                        <td th:text="${arquivo.getSize() / 1048576} + mB">128kB</td>
+                        <td th:text="${arquivo.getType()}">txt</td>
                         <td>
                             <button class="btn btn-outline-secondary dropdown-toggle" type="button"
                                     data-toggle="dropdown"

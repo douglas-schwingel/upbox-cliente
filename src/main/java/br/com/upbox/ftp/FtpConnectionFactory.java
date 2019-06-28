@@ -1,31 +1,35 @@
 package br.com.upbox.ftp;
 
-import org.apache.commons.net.ftp.FTPClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
-
-import java.io.IOException;
+import org.springframework.context.annotation.Bean;
+import org.springframework.integration.ftp.session.DefaultFtpSessionFactory;
+import org.springframework.integration.ftp.session.FtpSession;
+import org.springframework.stereotype.Component;
 
 public class FtpConnectionFactory {
     private static final Logger logger = LoggerFactory.getLogger(FtpConnectionFactory.class);
     private static final Marker marker = MarkerFactory.getMarker("ftpConnectionFactory");
 
-    private FTPClient ftpClient;
+    private String username;
+    private String password;
 
-    public FTPClient conecta(String username, String password, String workDir) throws IOException {
-        ftpClient = new FTPClient();
-        ftpClient.connect("localhost", 2112);
-        ftpClient.login(username, password);
-        ftpClient.changeWorkingDirectory(workDir);
-        return ftpClient;
+    public FtpConnectionFactory setUpUser(String username, String password) {
+        this.username = username;
+        this.password = password;
+        return this;
     }
 
-    public void disconecta() throws IOException {
-        if (ftpClient.isConnected()) {
-            ftpClient.disconnect();
-        }
-        System.out.println("Não conectado");
+    public FtpSession getSession() {
+        DefaultFtpSessionFactory sf = new DefaultFtpSessionFactory();
+        sf.setHost("localhost");
+        sf.setPort(2112);
+        sf.setUsername(username);
+        sf.setPassword(password);
+        return sf.getSession();
     }
+
+
 }
