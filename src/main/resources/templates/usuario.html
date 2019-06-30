@@ -90,8 +90,8 @@
                     <tbody>
                     <tr th:each="arquivo, itStat : ${lista}" th:start="1">
                         <td th:text="${itStat.index + 1}">1</td>
-                        <td th:text="${arquivo.name}">Arquivo de texto</td>
-                        <td th:text="${arquivo.getSize() / 1048576} + mB">128kB</td>
+                        <td th:text="${arquivo.getNome()}">Arquivo de texto</td>
+                        <td th:text="${arquivo.getTamanho()} + mB">128kB</td>
                         <td th:text="${arquivo.getType()}">txt</td>
                         <td>
                             <button class="btn btn-outline-secondary dropdown-toggle" type="button"

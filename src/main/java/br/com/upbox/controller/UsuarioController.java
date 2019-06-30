@@ -2,6 +2,7 @@ package br.com.upbox.controller;
 
 import br.com.upbox.ftp.FtpConnectionFactory;
 import br.com.upbox.ftp.FtpUtil;
+import br.com.upbox.models.Arquivo;
 import br.com.upbox.models.Usuario;
 import br.com.upbox.requisicoes.Delete;
 import br.com.upbox.requisicoes.Get;
@@ -60,8 +61,7 @@ public class UsuarioController {
         Usuario usuarioRetornado = conectaComAAPI(usuario.getUsername(), new Get());
         FtpUtil.getArquivos(usuarioRetornado);
         logger.info(marker, "Usuario {} adicionado com sucesso!", usuarioRetornado.getUsername());
-//        TODO solucionar o recurso
-        ModelAndView view = new ModelAndView("/usuario/{username}");
+        ModelAndView view = new ModelAndView("redirect:/usuario/" + usuario.getUsername());
         view.addObject("usuario", usuario);
         return view;
     }
@@ -70,7 +70,7 @@ public class UsuarioController {
     public ModelAndView buscaUsuario(@NotNull @PathVariable("username") String username) {
         ModelAndView view = new ModelAndView("usuario");
         Usuario usuarioRetornado = conectaComAAPI(username, new Get());
-        List<FTPFile> listaDeArquivos = FtpUtil.getArquivos(usuarioRetornado);
+        List<Arquivo> listaDeArquivos = FtpUtil.getArquivos(usuarioRetornado);
         view.addObject("lista", listaDeArquivos);
         view.addObject("usuario", usuarioRetornado);
         return view;
@@ -90,12 +90,17 @@ public class UsuarioController {
     @PostMapping("/envia_arquivo")
     public String enviaArquivos(@RequestParam("arquivo") MultipartFile arquivo,
                                 @RequestParam("username") String username,
-                                @RequestParam("password") String password) throws IOException {
-        boolean sucesso = FtpUtil.storeFiles(arquivo, username, password);
-        if (sucesso) {
-            logger.info(marker, "Arquivo inserido");
+                                @RequestParam("password") String password) {
+        try {
+            boolean sucesso = FtpUtil.storeFiles(arquivo, username, password);
+            if (sucesso) {
+                logger.info(marker, "Arquivo inserido");
+            }
+        } catch (IOException e) {
+            logger.error(marker, "Erro ao enviar o arquivo: {}", arquivo.getOriginalFilename());
+            e.printStackTrace();
         }
-        return "usuario/" + username;
+        return "redirect:/usuario/" + username;
     }
 
 

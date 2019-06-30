@@ -14,7 +14,6 @@ import org.slf4j.MarkerFactory;
 
 import java.time.Instant;
 import java.util.UUID;
-import java.util.logging.Level;
 
 public class UsuarioCodec implements CollectibleCodec<Usuario> {
     private static final Logger logger = LoggerFactory.getLogger(UsuarioCodec.class);
