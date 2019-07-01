@@ -24,7 +24,7 @@ public class ArquivoVazio extends Arquivo {
         return nome;
     }
 
-    public long getTamanho() {
+    public long getTamanhoFormatado() {
         return tamanho;
     }
 

@@ -87,25 +87,6 @@ public class UsuarioController {
         return view;
     }
 
-    @PostMapping("/envia_arquivo")
-    public String enviaArquivos(@RequestParam("arquivo") MultipartFile arquivo,
-                                @RequestParam("username") String username,
-                                @RequestParam("password") String password) {
-        try {
-            boolean sucesso = FtpUtil.storeFiles(arquivo, username, password);
-            if (sucesso) {
-                logger.info(marker, "Arquivo inserido");
-            }
-        } catch (IOException e) {
-            logger.error(marker, "Erro ao enviar o arquivo: {}", arquivo.getOriginalFilename());
-            e.printStackTrace();
-        }
-        return "redirect:/usuario/" + username;
-    }
-
-
-
-
     //    ****** Métodos auxiliares
 
     private String preparaJsonString(@ModelAttribute("usuario") Usuario usuario) {

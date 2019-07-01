@@ -74,7 +74,7 @@
                 <div class="card-body">
                     <ul class="list-group list-unstyled">
                         <li><a href="#" class="card-link">Arquivos Publicos</a></li>
-                        <li><a href="#" class="card-link">Arquivos Privados</a></li>
+                        <li><a href="#" class="card-link">Arquivos Compartilhados</a></li>
                     </ul>
                 </div>
             </div>
@@ -91,7 +91,7 @@
                     <tr th:each="arquivo, itStat : ${lista}" th:start="1">
                         <td th:text="${itStat.index + 1}">1</td>
                         <td th:text="${arquivo.getNome()}">Arquivo de texto</td>
-                        <td th:text="${arquivo.getTamanho()} + mB">128kB</td>
+                        <td th:text="${arquivo.getTamanho()}">128kB</td>
                         <td th:text="${arquivo.getType()}">txt</td>
                         <td>
                             <button class="btn btn-outline-secondary dropdown-toggle" type="button"
@@ -99,9 +99,19 @@
                                     aria-haspopup="true" aria-expanded="false">Opções
                             </button>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" href="#">Apagar</a>
+                                <form action="/deleta_arquivo" method="POST">
+                                    <input type="hidden" name="nomeArquivo" th:value="${arquivo.getNomeInteiro()}">
+                                    <input type="hidden" name="username" th:value="${usuario.getUsername()}">
+                                    <input type="hidden" name="password" th:value="${usuario.getSenha()}">
+                                    <button type="submit" class="btn btn-link dropdown-item">Apagar</button>
+                                </form>
                                 <a class="dropdown-item" href="#">Compartilhar</a>
-                                <a class="dropdown-item" href="#">Baixar</a>
+                                <form action="/download" target="_blank" method="POST">
+                                    <input type="hidden" name="nomeArquivo" th:value="${arquivo.getNomeInteiro()}">
+                                    <input type="hidden" name="username" th:value="${usuario.getUsername()}">
+                                    <input type="hidden" name="password" th:value="${usuario.getSenha()}">
+                                    <button type="submit" class="btn btn-link dropdown-item">Baixar</button>
+                                </form>
                             </div>
                         </td>
                     </tr>
