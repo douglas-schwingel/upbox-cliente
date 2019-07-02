@@ -49,7 +49,7 @@ public class ArquivoController {
         }
         return "redirect:/usuario/" + username;
     }
-
+//TODO arrumar o download pra que realmente baixe os arquivos
     @PostMapping("/download")
     public ModelAndView baixarArquivo(@RequestParam("nomeArquivo") String nomeArquivo,
                               @RequestParam("username") String username,
@@ -62,6 +62,11 @@ public class ArquivoController {
         return view;
     }
 
-
+    @PostMapping("/lista_compartilhados")
+    public ModelAndView listarCompartilhados(@RequestParam("username") String username) {
+        ModelAndView view = new ModelAndView("forward:localhost:9000/usuario/compartilhados");
+        view.addObject("username", username);
+        return view;
+    }
 
 }

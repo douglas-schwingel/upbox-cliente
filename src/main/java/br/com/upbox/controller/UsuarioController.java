@@ -84,7 +84,7 @@ public class UsuarioController {
         view.addObject("usuario", usuarioRetornado);
         return view;
     }
-
+//TODO acrescentar endpoint do compartilhamento
 
     //    ****** Métodos auxiliares
 
