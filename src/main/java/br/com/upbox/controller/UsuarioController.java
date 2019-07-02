@@ -1,6 +1,5 @@
 package br.com.upbox.controller;
 
-import br.com.upbox.ftp.FtpConnectionFactory;
 import br.com.upbox.ftp.FtpUtil;
 import br.com.upbox.models.Arquivo;
 import br.com.upbox.models.Usuario;
@@ -9,7 +8,6 @@ import br.com.upbox.requisicoes.Get;
 import br.com.upbox.requisicoes.Post;
 import br.com.upbox.requisicoes.Requisicao;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.net.ftp.FTPFile;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -20,8 +18,10 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.constraints.NotNull;
@@ -36,8 +36,6 @@ public class UsuarioController {
     private static final Marker marker = MarkerFactory.getMarker("usuario-controller");
     private static final String URL_API = "http://localhost:9000/usuario";
     private static final String CONTENT_TYPE = "application/json";
-
-    private FtpConnectionFactory fsf;
 
     @GetMapping("/")
     public String index() {
@@ -87,6 +85,37 @@ public class UsuarioController {
         return view;
     }
 
+//    @PostMapping("/compartilha_arquivo")
+//    public ModelAndView compartilharArquivo(@RequestParam("nomeArquivo") String nomeArquivo,
+//                                            @RequestParam("owner") String owner,
+//                                            @RequestParam("destinatario") String destinatario) throws IOException {
+//        ModelAndView view = new ModelAndView("redirect:/usuario/" + owner);
+//        Map<String, String> map = new HashMap<>();
+//        map.put("nomeArquivo", nomeArquivo);
+//        map.put("owner", owner);
+//        map.put("destinatario", destinatario);
+//
+//        String params = "nomeArquivo=" + nomeArquivo + "&owner=" + owner + "&destinatario=" + destinatario;
+////        StringBuilder postData = new StringBuilder();
+////        for (Map.Entry<String, String> param : map.entrySet()) {
+////            if (postData.length() != 0) postData.append("&");
+////            postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
+////            postData.append("=");
+////            postData.append(URLEncoder.encode(param.getValue(), "UTF-8"));
+////        }
+//        byte[] bytes = params.toString().getBytes("UTF-8");
+//
+//        URL url = new URL(URL_API + "/compartilha");
+//        URLConnection urlConnection = url.openConnection();
+//        urlConnection.setRequestProperty("Content-Type", "\"application/form-data\"");
+//        urlConnection.setDoOutput(true);
+//        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(urlConnection.getOutputStream());
+//        outputStreamWriter.write(params);
+//        outputStreamWriter.flush();
+//        return view;
+//
+//    }
+
     //    ****** Métodos auxiliares
 
     private String preparaJsonString(@ModelAttribute("usuario") Usuario usuario) {
@@ -117,7 +146,6 @@ public class UsuarioController {
     private Usuario getUsuario(InputStream content) throws IOException {
         return new ObjectMapper().readValue(content, Usuario.class);
     }
-
 
 
 }

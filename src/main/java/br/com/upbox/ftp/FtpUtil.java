@@ -47,7 +47,7 @@ public class FtpUtil {
             logger.info(marker, "tranzendo arquivos para {} com senha {}", usuario.getUsername(), usuario.getSenha());
             try {
                 FTPFile[] ftpFiles = ftpClient.listFiles();
-                if (ftpFiles[0] == null) {
+                if (ftpFiles.length == 0) {
                     listaDeArquivos.add(new ArquivoVazio());
                     return listaDeArquivos;
                 } else {
@@ -73,17 +73,14 @@ public class FtpUtil {
 
         try {
             FileOutputStream fos = new FileOutputStream(caminhoArquivoTemporario);
-            sucesso = ftpClient.retrieveFile(nomeArquivo, fos);
+            ftpClient.retrieveFile(nomeArquivo, fos);
             desconecta(ftpClient);
-            if (sucesso) {
-                return caminhoArquivoTemporario;
-            }
             logger.info(marker, "Arquivo {} de {} baixado com sucesso", nomeArquivo, username);
         } catch (IOException e) {
             logger.error(marker, "Erro ao baixar arquivo {} de {}", nomeArquivo, username);
         }
 
-        return "/usuario/" + username;
+        return "/temp/" + nomeArquivo;
     }
 
 

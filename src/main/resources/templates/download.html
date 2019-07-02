@@ -1,0 +1,19 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{pageTamplate :: layout(~{::#titulo}, ~{::#conteudo})}">
+<head>
+    <title id="titulo">Download | UpBox</title>
+</head>
+<body>
+<div id="conteudo" class="jumbotron bg-light w-75 mx-auto mt-2">
+    <h1 class="display-4" th:text="${nome}">Bem-Vindo</h1>
+    <hr class="my-4">
+    <p th:text="'Você está prestes a baixar o arquivo: ' + ${nome}">Texto</p>
+        <a th:href="${arquivo}" download>
+            <button class="btn btn-outline-primary">Clique aqui para baixar</button>
+        </a>
+</div>
+</body>
+
+</html>
+

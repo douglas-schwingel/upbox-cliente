@@ -60,6 +60,7 @@
                                 </div>
                             </div>
                         </div>
+
                     </li>
                     <li class="list-group-item">
                         <form action="/remove" th:object="${usuario}" method="POST">
@@ -89,6 +90,47 @@
                     </thead>
                     <tbody>
                     <tr th:each="arquivo, itStat : ${lista}" th:start="1">
+<!--                        Modal Compartilhameto  -->
+                        <div class="modal fade" id="modalCompartilha" tabindex="-1" role="dialog"
+                             aria-labelledby="modalCompartilhaTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modalCompartilhaTitle">Compartilhar aquivo com:</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form action="http://localhost:9000/usuario/compartilha" method="POST">
+                                        <div class="modal-body">
+
+                                            <input type="hidden" th:value="${arquivo.getNomeInteiro()}"
+                                                   name="nomeArquivo">
+                                            <input type="hidden" th:value="${usuario.getUsername()}" name="owner">
+                                            <div class="form-group">
+                                                <label for="destinatario">Username:</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">@</span>
+                                                    </div>
+                                                    <input required type="text" name="destinatario"
+                                                           id="destinatario" placeholder="silvajoao96"
+                                                           class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">Fechar
+                                            </button>
+
+                                            <button type="submit" class="btn btn-primary">Compartilhar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
                         <td th:text="${itStat.index + 1}">1</td>
                         <td th:text="${arquivo.getNome()}">Arquivo de texto</td>
                         <td th:text="${arquivo.getTamanho()}">128kB</td>
@@ -105,8 +147,13 @@
                                     <input type="hidden" name="password" th:value="${usuario.getSenha()}">
                                     <button type="submit" class="btn btn-link dropdown-item">Apagar</button>
                                 </form>
-                                <a class="dropdown-item" href="#">Compartilhar</a>
-                                <form action="/download" method="POST">
+
+                                <button type="button" class="btn btn-link dropdown-item" data-toggle="modal"
+                                        data-target="#modalCompartilha">
+                                    Compartilhar
+                                </button>
+
+                                <form action="/download" target="_blank" method="POST">
                                     <input type="hidden" name="nomeArquivo" th:value="${arquivo.getNomeInteiro()}">
                                     <input type="hidden" name="username" th:value="${usuario.getUsername()}">
                                     <input type="hidden" name="password" th:value="${usuario.getSenha()}">
@@ -124,3 +171,4 @@
 
 </body>
 </html>
+

@@ -2,10 +2,13 @@ package br.com.upbox.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.mongodb.BasicDBObject;
 import org.bson.types.ObjectId;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
@@ -20,9 +23,6 @@ public class Usuario implements Serializable {
     private UUID uuid;
     private String nome;
     private String email;
-//
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-//    private LocalDate dataNascimento;
     private int dia;
     private int mes;
     private int ano;
@@ -76,15 +76,6 @@ public class Usuario implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
-
-
-//    public LocalDate getDataNascimento() {
-//        return dataNascimento;
-//    }
-//
-//    public void setDataNascimento(LocalDate dataNascimento) {
-//        this.dataNascimento = dataNascimento;
-//    }
 
     public String getUsername() {
         return username;
