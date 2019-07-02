@@ -85,36 +85,6 @@ public class UsuarioController {
         return view;
     }
 
-//    @PostMapping("/compartilha_arquivo")
-//    public ModelAndView compartilharArquivo(@RequestParam("nomeArquivo") String nomeArquivo,
-//                                            @RequestParam("owner") String owner,
-//                                            @RequestParam("destinatario") String destinatario) throws IOException {
-//        ModelAndView view = new ModelAndView("redirect:/usuario/" + owner);
-//        Map<String, String> map = new HashMap<>();
-//        map.put("nomeArquivo", nomeArquivo);
-//        map.put("owner", owner);
-//        map.put("destinatario", destinatario);
-//
-//        String params = "nomeArquivo=" + nomeArquivo + "&owner=" + owner + "&destinatario=" + destinatario;
-////        StringBuilder postData = new StringBuilder();
-////        for (Map.Entry<String, String> param : map.entrySet()) {
-////            if (postData.length() != 0) postData.append("&");
-////            postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
-////            postData.append("=");
-////            postData.append(URLEncoder.encode(param.getValue(), "UTF-8"));
-////        }
-//        byte[] bytes = params.toString().getBytes("UTF-8");
-//
-//        URL url = new URL(URL_API + "/compartilha");
-//        URLConnection urlConnection = url.openConnection();
-//        urlConnection.setRequestProperty("Content-Type", "\"application/form-data\"");
-//        urlConnection.setDoOutput(true);
-//        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(urlConnection.getOutputStream());
-//        outputStreamWriter.write(params);
-//        outputStreamWriter.flush();
-//        return view;
-//
-//    }
 
     //    ****** Métodos auxiliares
 

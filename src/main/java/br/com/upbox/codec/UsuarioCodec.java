@@ -1,6 +1,7 @@
 package br.com.upbox.codec;
 
 import br.com.upbox.models.Usuario;
+import com.mongodb.BasicDBObject;
 import org.bson.*;
 import org.bson.codecs.Codec;
 import org.bson.codecs.CollectibleCodec;
@@ -14,6 +15,7 @@ import org.slf4j.MarkerFactory;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public class UsuarioCodec implements CollectibleCodec<Usuario> {
@@ -64,6 +66,7 @@ public class UsuarioCodec implements CollectibleCodec<Usuario> {
         usuario.setEmail(document.getString("email"));
         usuario.setUsername(document.getString("username"));
         usuario.setSenha(document.getString("senha"));
+        usuario.setArquivosCompartilhados((Set<BasicDBObject>)document.get("comparitlhadosComigo"));
         return usuario;
     }
 
@@ -74,6 +77,7 @@ public class UsuarioCodec implements CollectibleCodec<Usuario> {
         document.put("nome", usuario.getNome());
         document.put("email", usuario.getEmail());
         document.put("username", usuario.getUsername());
+        document.put("compartilhadosComigo", usuario.getArquivosCompartilhados());
         String salto = BCrypt.gensalt();
         String senhaHash = BCrypt.hashpw(usuario.getSenha(), salto);
         document.put("senha", senhaHash);

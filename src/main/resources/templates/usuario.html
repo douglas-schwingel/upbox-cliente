@@ -91,7 +91,7 @@
                     <tbody>
                     <tr th:each="arquivo, itStat : ${lista}" th:start="1">
 <!--                        Modal Compartilhameto  -->
-                        <div class="modal fade" id="modalCompartilha" tabindex="-1" role="dialog"
+                        <div class="modal fade" th:id="'modalCompartilha' + ${arquivo.getNome()}" tabindex="-1" role="dialog"
                              aria-labelledby="modalCompartilhaTitle" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
@@ -149,7 +149,7 @@
                                 </form>
 
                                 <button type="button" class="btn btn-link dropdown-item" data-toggle="modal"
-                                        data-target="#modalCompartilha">
+                                        th:data-target="'#modalCompartilha' + ${arquivo.getNome()}">
                                     Compartilhar
                                 </button>
 

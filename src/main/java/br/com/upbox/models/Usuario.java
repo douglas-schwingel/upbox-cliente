@@ -7,9 +7,7 @@ import org.bson.types.ObjectId;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import org.springframework.data.annotation.Id;
 
@@ -28,6 +26,15 @@ public class Usuario implements Serializable {
     private int ano;
     private String username;
     private String senha;
+    private Set<BasicDBObject> arquivosCompartilhados = new HashSet<>();
+
+    public Set<BasicDBObject> getArquivosCompartilhados() {
+        return arquivosCompartilhados;
+    }
+
+    public void setArquivosCompartilhados(Set<BasicDBObject> arquivosCompartilhados) {
+        this.arquivosCompartilhados = arquivosCompartilhados;
+    }
 
     public ObjectId getId() {
         return id;
