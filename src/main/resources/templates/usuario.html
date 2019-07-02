@@ -106,7 +106,7 @@
                                     <button type="submit" class="btn btn-link dropdown-item">Apagar</button>
                                 </form>
                                 <a class="dropdown-item" href="#">Compartilhar</a>
-                                <form action="/download" target="_blank" method="POST">
+                                <form action="/download" method="POST">
                                     <input type="hidden" name="nomeArquivo" th:value="${arquivo.getNomeInteiro()}">
                                     <input type="hidden" name="username" th:value="${usuario.getUsername()}">
                                     <input type="hidden" name="password" th:value="${usuario.getSenha()}">

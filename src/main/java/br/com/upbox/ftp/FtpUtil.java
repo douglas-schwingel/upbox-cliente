@@ -12,6 +12,8 @@ import org.slf4j.MarkerFactory;
 import org.springframework.boot.context.TypeExcludeFilter;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.swing.*;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -68,17 +70,19 @@ public class FtpUtil {
         FTPClient ftpClient = getFtpClient(username, password);
         boolean sucesso = false;
         String caminhoArquivoTemporario = System.getProperty("user.dir") + "/temp/" + nomeArquivo;
+
         try {
             FileOutputStream fos = new FileOutputStream(caminhoArquivoTemporario);
             sucesso = ftpClient.retrieveFile(nomeArquivo, fos);
             desconecta(ftpClient);
-            if(sucesso) {
+            if (sucesso) {
                 return caminhoArquivoTemporario;
             }
             logger.info(marker, "Arquivo {} de {} baixado com sucesso", nomeArquivo, username);
         } catch (IOException e) {
             logger.error(marker, "Erro ao baixar arquivo {} de {}", nomeArquivo, username);
         }
+
         return "/usuario/" + username;
     }
 
@@ -118,5 +122,9 @@ public class FtpUtil {
             logger.error(marker, "Erro ao deletar arquivo {} de {}", nomeArquivo, username);
         }
         return sucesso;
+    }
+
+    public static boolean compartilhaArquivo(String nomeArquivo, String owner, String destinatario) {
+        return false;
     }
 }
