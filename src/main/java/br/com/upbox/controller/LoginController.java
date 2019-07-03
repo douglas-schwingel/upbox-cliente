@@ -14,7 +14,7 @@ public class LoginController {
 
     @GetMapping("/login")
     public String login() {
-        logger.info(marker, "Entrando na pagina de login");
+        logger.info(marker, "Entrando na pagina de {}", "login");
         return "login-form";
     }
 }

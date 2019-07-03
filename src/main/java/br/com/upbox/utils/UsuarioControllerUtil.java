@@ -29,41 +29,36 @@ public class UsuarioControllerUtil {
     private static final String URL_API = "http://localhost:9000/usuario";
     private static final String CONTENT_TYPE = "application/json";
 
+    private UsuarioControllerUtil() {
+
+    }
+
     public static Usuario buscaUsuario(String username) {
         InputStream content = conectaComAAPI(username, new Get());
         try {
             return getUsuario(content);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(marker, "erro ao buscar usuario {}", username);
         }
         return null;
     }
 
-    public static void enviaUsuario(String usuarioJson) {
+    public static void enviaUsuario(Usuario usuario) {
+        String usuarioJson = preparaJsonString(usuario);
         conectaComAAPI(usuarioJson, new Post());
     }
 
-    public static Usuario deletaUsuario(String usuarioJson) {
+    public static Usuario deletaUsuario(Usuario usuario) {
+        String usuarioJson = preparaJsonString(usuario);
         InputStream content = conectaComAAPI(usuarioJson, new Delete());
         try {
             return getUsuario(content);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(marker, "Erro {} ao buscar usuario {}", e.getMessage(), usuario.getUsername());
         }
         return null;
     }
-
-//    public static Set<BasicDBObject> lista(String username) {
-//        InputStream content = conectaComAAPI(username, new Lista());
-//        try {
-//            Usuario usuario = getUsuario(content);
-//            return usuario.getArquivosCompartilhados();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return new HashSet<>();
-//    }
 
     private static InputStream conectaComAAPI(String usuarioComoString, Requisicao requisicao) {
         try {
@@ -72,8 +67,7 @@ public class UsuarioControllerUtil {
             HttpUriRequest request = requisicao.prepara(URL_API, usuarioComoString, CONTENT_TYPE);
             CloseableHttpResponse response = httpClient.execute(request);
             HttpEntity entity = response.getEntity();
-            InputStream content = entity.getContent();
-            return content;
+            return entity.getContent();
         } catch (IOException e) {
             logger.error(marker, "Erro: {}", e);
             return null;

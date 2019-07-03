@@ -26,11 +26,10 @@ public class ArquivoController {
         try {
             boolean sucesso = FtpUtil.storeFiles(arquivo, username, password);
             if (sucesso) {
-                logger.info(marker, "Arquivo inserido");
+                logger.info(marker, "Arquivo {} inserido", arquivo.getName());
             }
         } catch (IOException e) {
             logger.error(marker, "Erro ao enviar o arquivo: {}", arquivo.getOriginalFilename());
-            e.printStackTrace();
         }
         return "redirect:/usuario/" + username;
     }

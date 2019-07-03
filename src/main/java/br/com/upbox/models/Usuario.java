@@ -20,9 +20,6 @@ public class Usuario implements Serializable {
     private UUID uuid;
     private String nome;
     private String email;
-    private int dia;
-    private int mes;
-    private int ano;
     private String username;
     private String senha;
     private Set<BasicDBObject> arquivosCompartilhados = new HashSet<>();

@@ -13,8 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 
-import java.time.Instant;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -66,11 +66,19 @@ public class UsuarioCodec implements CollectibleCodec<Usuario> {
         usuario.setEmail(document.getString("email"));
         usuario.setUsername(document.getString("username"));
         usuario.setSenha(document.getString("senha"));
-        usuario.setArquivosCompartilhados((Set<BasicDBObject>)document.get("comparitlhadosComigo"));
+        ArrayList<Document> lista = (ArrayList<Document>) document.get("compartilhadosComigo");
+        Set<BasicDBObject> set = new HashSet<>();
+        for (Document item : lista) {
+            BasicDBObject object = new BasicDBObject();
+            object.put("owner", item.getString("owner"));
+            object.put("arquivo", item.getString("arquivo"));
+            set.add(object);
+        }
+        usuario.setArquivosCompartilhados(set);
         return usuario;
     }
 
-    public Document criaDocument(Usuario usuario) {
+    private Document criaDocument(Usuario usuario) {
         Document document = new Document();
         document.put("_id", usuario.getId());
         document.put("uuid", usuario.getUuid().toString());

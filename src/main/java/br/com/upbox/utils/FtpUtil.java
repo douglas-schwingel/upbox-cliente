@@ -71,9 +71,7 @@ public class FtpUtil {
 
     public static String baixaArquivo(String nomeArquivo, String username, String password) {
         FTPClient ftpClient = getFtpClient(username, password);
-        boolean sucesso = false;
         String caminhoArquivoTemporario = System.getProperty("user.dir") + "/temp/" + nomeArquivo;
-
         try {
             FileOutputStream fos = new FileOutputStream(caminhoArquivoTemporario);
             ftpClient.retrieveFile(nomeArquivo, fos);
@@ -106,7 +104,7 @@ public class FtpUtil {
             try {
                 ftpClient.disconnect();
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error(marker, "Erro {} ao remover usuario {}", e.getMessage(), usuario.getUsername());
             }
         }
     }
@@ -122,9 +120,5 @@ public class FtpUtil {
             logger.error(marker, "Erro ao deletar arquivo {} de {}", nomeArquivo, username);
         }
         return sucesso;
-    }
-
-    public static boolean compartilhaArquivo(String nomeArquivo, String owner, String destinatario) {
-        return false;
     }
 }
