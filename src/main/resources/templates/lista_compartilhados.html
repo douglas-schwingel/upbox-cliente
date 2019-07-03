@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" th:replace="~{pageTamplate :: layout(~{::#titulo}, ~{::#conteudo})}">
 <head>
-    <title id="titulo">Usuario | UpBox</title>
+    <title id="titulo">Arquivos Compartilhados | UpBox</title>
 </head>
 <body>
 <div id="conteudo" class="jumbotron bg-light w-75 mx-auto mt-2">
@@ -74,11 +74,7 @@
                 </ul>
                 <div class="card-body">
                     <ul class="list-group list-unstyled">
-                        <li>
-                            <form th:action="'/usuario/' + ${usuario.getUsername()} + '/compartilhado'" method="POST">
-                                <button type="submit" class="btn btn-link card-link">Arquivos Compartilhados</button>
-                            </form>
-                        </li>
+                        <li><a href="#" class="card-link">Arquivos Compartilhados</a></li>
                     </ul>
                 </div>
             </div>
@@ -87,83 +83,15 @@
                     <thead class="thead-light">
                     <th scope="col">#</th>
                     <th scope="col">Nome do Arquivo</th>
-                    <th scope="col">Tamanho</th>
                     <th scope="col">Extensão</th>
-                    <th scope="col">Opções</th>
+                    <th scope="col">Dono</th>
                     </thead>
                     <tbody>
                     <tr th:each="arquivo, itStat : ${lista}" th:start="1">
-<!--                        Modal Compartilhameto  -->
-                        <div class="modal fade" th:id="'modalCompartilha' + ${arquivo.getNome()}" tabindex="-1" role="dialog"
-                             aria-labelledby="modalCompartilhaTitle" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="modalCompartilhaTitle">Compartilhar aquivo com:</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <form action="http://localhost:9000/usuario/compartilha" method="POST">
-                                        <div class="modal-body">
-
-                                            <input type="hidden" th:value="${arquivo.getNomeInteiro()}"
-                                                   name="nomeArquivo">
-                                            <input type="hidden" th:value="${usuario.getUsername()}" name="owner">
-                                            <div class="form-group">
-                                                <label for="destinatario">Username:</label>
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text">@</span>
-                                                    </div>
-                                                    <input required type="text" name="destinatario"
-                                                           id="destinatario" placeholder="silvajoao96"
-                                                           class="form-control">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                    data-dismiss="modal">Fechar
-                                            </button>
-
-                                            <button type="submit" class="btn btn-primary">Compartilhar</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-
                         <td th:text="${itStat.index + 1}">1</td>
                         <td th:text="${arquivo.getNome()}">Arquivo de texto</td>
-                        <td th:text="${arquivo.getTamanho()}">128kB</td>
-                        <td th:text="${arquivo.getType()}">txt</td>
-                        <td>
-                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                    data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">Opções
-                            </button>
-                            <div class="dropdown-menu">
-                                <form action="/deleta_arquivo" method="POST">
-                                    <input type="hidden" name="nomeArquivo" th:value="${arquivo.getNomeInteiro()}">
-                                    <input type="hidden" name="username" th:value="${usuario.getUsername()}">
-                                    <input type="hidden" name="password" th:value="${usuario.getSenha()}">
-                                    <button type="submit" class="btn btn-link dropdown-item">Apagar</button>
-                                </form>
-
-                                <button type="button" class="btn btn-link dropdown-item" data-toggle="modal"
-                                        th:data-target="'#modalCompartilha' + ${arquivo.getNome()}">
-                                    Compartilhar
-                                </button>
-
-                                <form action="/download" target="_blank" method="POST">
-                                    <input type="hidden" name="nomeArquivo" th:value="${arquivo.getNomeInteiro()}">
-                                    <input type="hidden" name="username" th:value="${usuario.getUsername()}">
-                                    <input type="hidden" name="password" th:value="${usuario.getSenha()}">
-                                    <button type="submit" class="btn btn-link dropdown-item">Baixar</button>
-                                </form>
-                            </div>
-                        </td>
+                        <td th:text="${arquivo.getFormato()}">txt</td>
+                        <td th:text="${arquivo.getDono()}">Dono</td>
                     </tr>
                     </tbody>
                 </table>

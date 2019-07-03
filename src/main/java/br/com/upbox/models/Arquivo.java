@@ -22,14 +22,14 @@ public class Arquivo {
         this.owner = arquivoOriginal.getUser();
     }
 
+    protected Arquivo() {
+    }
+
     private String getTamanhoFormatado(long size) {
         if ((size / 1048576) < 1) {
             return (size / 1024) + " kB";
         }
         return size / 1048576 + " mB";
-    }
-
-    protected Arquivo() {
     }
 
     public String getNomeInteiro() {

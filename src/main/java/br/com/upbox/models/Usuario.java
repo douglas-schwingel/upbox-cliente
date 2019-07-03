@@ -1,15 +1,14 @@
 package br.com.upbox.models;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mongodb.BasicDBObject;
 import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.*;
-
-import org.springframework.data.annotation.Id;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -42,30 +41,6 @@ public class Usuario implements Serializable {
 
     public void setId(ObjectId id) {
         this.id = id;
-    }
-
-    public int getDia() {
-        return dia;
-    }
-
-    public void setDia(int dia) {
-        this.dia = dia;
-    }
-
-    public int getMes() {
-        return mes;
-    }
-
-    public void setMes(int mes) {
-        this.mes = mes;
-    }
-
-    public int getAno() {
-        return ano;
-    }
-
-    public void setAno(int ano) {
-        this.ano = ano;
     }
 
     public String getNome() {
