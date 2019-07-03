@@ -1,0 +1,18 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{pageTamplate :: layout(~{::#titulo}, ~{::#conteudo})}">
+<head>
+    <title id="titulo">Erro =( | UpBox</title>
+</head>
+<body>
+<div id="conteudo" class="jumbotron bg-light w-75 mx-auto mt-2">
+    <h1 class="display-4">Oops! =(</h1>
+    <p>Algo de errado não está certo...</p>
+    <hr class="my-4">
+    <p th:text="'Erro: ' + ${erro.getStatus()}"> Código</p>
+    <p th:text="'Mensagem: ' + ${erro.getMessage()}"> Mensagem</p>
+</div>
+</body>
+
+</html>
+

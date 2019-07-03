@@ -2,8 +2,8 @@ package br.com.upbox.controller;
 
 import br.com.upbox.models.Arquivo;
 import br.com.upbox.models.ArquivoCompartilhado;
+import br.com.upbox.models.Erro;
 import br.com.upbox.models.Usuario;
-import br.com.upbox.requisicoes.*;
 import br.com.upbox.utils.FtpUtil;
 import br.com.upbox.utils.UsuarioControllerUtil;
 import com.mongodb.BasicDBObject;
@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -93,5 +94,17 @@ public class UsuarioController {
         view.addObject(USUARIO, usuario);
         return view;
     }
+
+    @ExceptionHandler(NullPointerException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ModelAndView erro() {
+        ModelAndView view = new ModelAndView("erro");
+        Erro erro = new Erro();
+        erro.setStatus(500);
+        erro.setMessage("Erro interno no servidor! Verifique as informações e tente novamente!");
+        view.addObject("erro", erro);
+        return view;
+    }
+
 
 }
