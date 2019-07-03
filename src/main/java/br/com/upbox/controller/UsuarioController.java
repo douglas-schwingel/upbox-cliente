@@ -100,8 +100,8 @@ public class UsuarioController {
     public ModelAndView erro() {
         ModelAndView view = new ModelAndView("erro");
         Erro erro = new Erro();
-        erro.setStatus(500);
-        erro.setMessage("Erro interno no servidor! Verifique as informações e tente novamente!");
+        erro.setStatus(404);
+        erro.setMessage("Usuario não encontrado!");
         view.addObject("erro", erro);
         return view;
     }
