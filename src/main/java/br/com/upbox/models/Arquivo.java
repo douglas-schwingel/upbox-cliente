@@ -1,35 +1,36 @@
 package br.com.upbox.models;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.net.ftp.FTPFile;
+import org.bson.Document;
 
 
 public class Arquivo {
 
     private String nome;
-    private String tamanho;
     private String type;
-    private String owner;
     private String nomeInteiro;
-    private FTPFile arquivoOriginal;
+    private String dono;
 
-    public Arquivo(FTPFile arquivoOriginal) {
-        this.arquivoOriginal = arquivoOriginal;
-        this.nomeInteiro = arquivoOriginal.getName();
+    public Arquivo(String arquivoOriginal, String username) {
+        this.nomeInteiro = arquivoOriginal;
         this.nome = FilenameUtils.getBaseName(nomeInteiro);
         this.type = FilenameUtils.getExtension(nomeInteiro);
-        this.tamanho = getTamanhoFormatado(arquivoOriginal.getSize());
-        this.owner = arquivoOriginal.getUser();
+        this.dono = username;
+    }
+
+    public Arquivo(Document document) {
+        this.nomeInteiro = document.getString("arquivo");
+        this.nome = FilenameUtils.getBaseName(nomeInteiro);
+        this.type = FilenameUtils.getExtension(nomeInteiro);
+        String owner = document.getString("owner");
+        if (owner == null) {
+            this.dono = document.getString("destinatario");
+        } else {
+            this.dono = document.getString("owner");
+        }
     }
 
     protected Arquivo() {
-    }
-
-    private String getTamanhoFormatado(long size) {
-        if ((size / 1048576) < 1) {
-            return (size / 1024) + " kB";
-        }
-        return size / 1048576 + " mB";
     }
 
     public String getNomeInteiro() {
@@ -40,19 +41,11 @@ public class Arquivo {
         return nome;
     }
 
-    public String getTamanho() {
-        return tamanho;
-    }
-
     public String getType() {
         return type;
     }
 
-    public FTPFile getArquivoOriginal() {
-        return arquivoOriginal;
-    }
-
-    public String getOwner() {
-        return owner;
+    public String getDono() {
+        return dono;
     }
 }

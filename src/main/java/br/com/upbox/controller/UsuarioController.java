@@ -1,12 +1,10 @@
 package br.com.upbox.controller;
 
 import br.com.upbox.models.Arquivo;
-import br.com.upbox.models.ArquivoCompartilhado;
 import br.com.upbox.models.Erro;
 import br.com.upbox.models.Usuario;
 import br.com.upbox.utils.FtpUtil;
 import br.com.upbox.utils.UsuarioControllerUtil;
-import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -78,15 +75,17 @@ public class UsuarioController {
        return "redirect:/usuario/" + username;
     }
 
-    @PostMapping("/usuario/{username}/compartilhado")
-    public ModelAndView listaCompartilhamento(@PathVariable("username") String username) {
-        ModelAndView view = new ModelAndView("lista_compartilhados");
+    @PostMapping("/usuario/{username}/{compartilhamento}")
+    public ModelAndView listaCompartilhamento(@PathVariable("username") String username,
+                                              @PathVariable("compartilhamento") String compartilhamento) {
+        ModelAndView view;
+        if (compartilhamento.equals("compartilhado")){
+            view = new ModelAndView("lista_compartilhados");
+        } else {
+            view = new ModelAndView("lista_compartilhei");
+        }
         Usuario usuario = UsuarioControllerUtil.buscaUsuario(username);
-        List<Document> lista = usuario.getCompartilhadosComigo();
-        List<ArquivoCompartilhado> listaArquivo = new ArrayList<>();
-        lista.forEach(b -> listaArquivo.add(new ArquivoCompartilhado(b)));
-        listaArquivo.forEach(a -> System.out.println("Arquivo compartilhado: " + a.getNome()));
-        view.addObject("lista", listaArquivo);
+        view.addObject("lista", UsuarioControllerUtil.populaListaArquivos(usuario, compartilhamento));
         view.addObject(USUARIO, usuario);
         return view;
     }
@@ -101,6 +100,5 @@ public class UsuarioController {
         view.addObject("erro", erro);
         return view;
     }
-
 
 }

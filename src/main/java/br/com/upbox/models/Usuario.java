@@ -22,6 +22,15 @@ public class Usuario implements Serializable {
     private String username;
     private String senha;
     private List<Document> compartilhadosComigo = new ArrayList<>();
+    private List<Document> compartilheiCom = new ArrayList<>();
+
+    public List<Document> getCompartilheiCom() {
+        return compartilheiCom;
+    }
+
+    public void setCompartilheiCom(List<Document> compartilheiCom) {
+        this.compartilheiCom = compartilheiCom;
+    }
 
     public List<Document> getCompartilhadosComigo() {
         return compartilhadosComigo;

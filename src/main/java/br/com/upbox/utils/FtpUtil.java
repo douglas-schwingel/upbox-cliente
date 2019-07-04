@@ -2,10 +2,8 @@ package br.com.upbox.utils;
 
 import br.com.upbox.ftp.FtpConnectionFactory;
 import br.com.upbox.models.Arquivo;
-import br.com.upbox.models.ArquivoVazio;
 import br.com.upbox.models.Usuario;
 import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTPFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
@@ -44,7 +42,7 @@ public class FtpUtil {
         if (ftpClient != null) {
             logger.info(marker, "tranzendo arquivos para {} com senha {}", usuario.getUsername(), usuario.getSenha());
             try {
-                if (populaLista(ftpClient, listaDeArquivos)) return listaDeArquivos;
+                if (populaLista(ftpClient, listaDeArquivos, usuario.getUsername())) return listaDeArquivos;
                 desconecta(ftpClient);
             } catch (IOException e) {
                 logger.error(marker, "Erro ao listar arquivos de {}", usuario.getUsername());
@@ -54,15 +52,14 @@ public class FtpUtil {
         return listaDeArquivos;
     }
 
-    private static boolean populaLista(FTPClient ftpClient, List<Arquivo> listaDeArquivos) throws IOException {
-        FTPFile[] ftpFiles = ftpClient.listFiles();
+    private static boolean populaLista(FTPClient ftpClient, List<Arquivo> listaDeArquivos, String username) throws IOException {
+        String[] ftpFiles = ftpClient.listNames();
         if (ftpFiles.length == 0) {
-            listaDeArquivos.add(new ArquivoVazio());
             desconecta(ftpClient);
             return true;
         } else {
-            for (FTPFile ftpFile : ftpFiles) {
-                Arquivo arquivo = new Arquivo(ftpFile);
+            for (String ftpFile : ftpFiles) {
+                Arquivo arquivo = new Arquivo(ftpFile, username);
                 listaDeArquivos.add(arquivo);
                 logger.info(marker, "Adicionando arquivo {} a lista", arquivo.getNome());
             }

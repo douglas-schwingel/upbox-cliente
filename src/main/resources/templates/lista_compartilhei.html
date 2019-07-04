@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" th:replace="~{pageTamplate :: layout(~{::#titulo}, ~{::#conteudo})}">
 <head>
-    <title id="titulo">Compartilhei com Outros | UpBox</title>
+    <title id="titulo">Arquivos Compartilhados | UpBox</title>
 </head>
 <body>
 <div id="conteudo" class="jumbotron bg-light w-75 mx-auto mt-2">
@@ -96,7 +96,7 @@
                     <th scope="col">#</th>
                     <th scope="col">Nome do Arquivo</th>
                     <th scope="col">Extensão</th>
-                    <th scope="col">Dono</th>
+                    <th scope="col">Destinatario</th>
                     <th scope="col">Baixar</th>
                     </thead>
                     <tbody>
@@ -107,11 +107,11 @@
                             <td th:text="${arquivo.getType()}">txt</td>
                             <td th:text="${arquivo.getDono()}">Dono</td>
                             <td>
-                                <form action="/download" target="_blank" method="POST">
+                                <form action="http://localhost:9000/usuario/parar_compartilhamento" method="POST">
                                     <input type="hidden" name="nomeArquivo" th:value="${arquivo.getNomeInteiro()}">
-                                    <input type="hidden" name="username" th:value="${usuario.getUsername()}">
-                                    <input type="hidden" name="password" th:value="${usuario.getSenha()}">
-                                    <button type="submit" class="btn btn-sm btn-outline-primary">Baixar</button>
+                                    <input type="hidden" name="owner" th:value="${usuario.getUsername()}">
+                                    <input type="hidden" name="destinatario" th:value="${arquivo.getDono()}">
+                                    <button type="submit" class="btn btn-sm btn-outline-primary">Parar Compartilhamento</button>
                                 </form>
                             </td>
                         </tr>

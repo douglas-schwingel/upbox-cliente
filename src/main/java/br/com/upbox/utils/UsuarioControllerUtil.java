@@ -1,5 +1,6 @@
 package br.com.upbox.utils;
 
+import br.com.upbox.models.Arquivo;
 import br.com.upbox.models.Usuario;
 import br.com.upbox.requisicoes.Delete;
 import br.com.upbox.requisicoes.Get;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class UsuarioControllerUtil {
@@ -87,6 +90,20 @@ public class UsuarioControllerUtil {
         document.put("senha", usuario.getSenha());
         document.put("uuid", UUID.randomUUID().toString());
         document.put("compartilhadosComigo", usuario.getCompartilhadosComigo());
+        document.put("compartilheiCom", usuario.getCompartilheiCom());
         return document.toJson();
+    }
+
+    public static List<Arquivo> populaListaArquivos(Usuario usuario, String compartilhamento) {
+        List<Arquivo> listaArquivo = new ArrayList<>();
+        List<Document> lista;
+        if (compartilhamento.equals("compartilhado")) {
+            lista = usuario.getCompartilhadosComigo();
+        } else {
+            lista = usuario.getCompartilheiCom();
+        }
+        lista.forEach(b -> listaArquivo.add(new Arquivo(b)));
+        listaArquivo.forEach(a -> System.out.println("Arquivo compartilhado: " + a.getNome()));
+        return listaArquivo;
     }
 }
