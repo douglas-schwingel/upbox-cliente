@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html th:fragment="layout(titulo, conteudo)" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title th:replace="${titulo}">Titulo</title>
+    <link rel="icon"
+          href="https://raw.githubusercontent.com/douglas-schwingel/upbox-cliente/dev/src/main/resources/static/images/favicon.ico"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+
+<body>
+<nav th:insert="~{top :: header}"></nav>
+<div class="jumbotron bg-light w-75 mx-auto mt-2">
+    <div class="card">
+        <div class="row no-gutters">
+            <div class="col-md-3">
+                <a th:href="'/usuario/' + ${usuario.getUsername()}" style="text-decoration: none">
+                    <h5 class="card-header" th:text="${usuario.nome}">Nome do Usuario</h5>
+                </a>
+                <object data="http://stackoverflow.com/does-not-exist.png" type="image/png">
+                    <img src="#" alt="Foto do usuario">
+                </object>
+                <div class="card-body">
+                    <p class="card-text" th:text="|@${usuario.username}|">@username</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                data-target="#exampleModalCenter">
+                            Fazer um Up!
+                        </button>
+
+                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalCenterTitle">Up de arquivo</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form action="/envia_arquivo" method="POST" enctype="multipart/form-data">
+                                        <input th:type="hidden" name="username" th:value="${usuario.username}">
+                                        <input th:type="hidden" name="password" th:value="${usuario.senha}">
+                                        <div class="modal-body">
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                        <span class="input-group-text"
+                                                              id="inputGroupFileAddon01">Up!</span>
+                                                </div>
+                                                <div class="custom-file">
+                                                    <input type="file" class="custom-file-input"
+                                                           id="inputGroupFile01"
+                                                           aria-describedby="inputGroupFileAddon01" name="arquivo">
+                                                    <label class="custom-file-label" for="inputGroupFile01">Escolha
+                                                        um Arquivo</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                                Fechar
+                                            </button>
+                                            <button type="submit" class="btn btn-primary">Salvar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                    </li>
+                    <li class="list-group-item">
+                        <form action="/remove" th:object="${usuario}" method="POST">
+                            <input type="hidden" th:field="*{username}" th:value="${usuario.username}"/>
+                            <button type="submit" class="btn btn-danger"
+                                    onclick="return confirm('Quer mesmo apagar sua conta? :(');">
+                                Deletar conta
+                            </button>
+                        </form>
+                    </li>
+                    <li class="list-group-item">Seguidores</li>
+                </ul>
+                <div class="card-body">
+                    <ul class="list-group list-unstyled">
+                        <li>
+                            <form th:action="'/usuario/' + ${usuario.getUsername()} + '/compartilhado'" method="POST">
+                                <button type="submit" class="btn btn-link card-link">Compartilhados comigo</button>
+                            </form>
+                        </li>
+                        <li>
+                            <form th:action="'/usuario/' + ${usuario.getUsername()} + '/compartilhei'" method="POST">
+                                <button type="submit" class="btn btn-link card-link">Compartilhei</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div th:replace="${conteudo}">
+                Conteudo
+            </div>
+        </div>
+    </div>
+</div>
+<footer th:insert="~{rodape :: footer}"></footer>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

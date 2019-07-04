@@ -1,128 +1,38 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:replace="~{pageTamplate :: layout(~{::#titulo}, ~{::#conteudo})}">
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{pageTamplateUsuario :: layout(~{::#titulo}, ~{::#conteudo})}">
 <head>
     <title id="titulo">Arquivos Compartilhados | UpBox</title>
 </head>
 <body>
-<div id="conteudo" class="jumbotron bg-light w-75 mx-auto mt-2">
-    <div class="card">
-        <div class="row no-gutters">
-            <div class="col-md-3">
-                <a th:href="'/usuario/' + ${usuario.getUsername()}" style="text-decoration: none">
-                    <h5 class="card-header" th:text="${usuario.nome}">Nome do Usuario</h5>
-                </a>
-                <object data="http://stackoverflow.com/does-not-exist.png" type="image/png">
-                    <img src="#" alt="Foto do usuario">
-                </object>
-                <div class="card-body">
-                    <p class="card-text" th:text="|@${usuario.username}|">@username</p>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
-                        <button type="button" class="btn btn-primary" data-toggle="modal"
-                                data-target="#exampleModalCenter">
-                            Fazer um Up!
-                        </button>
-
-                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-                             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalCenterTitle">Up de arquivo</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <form action="/envia_arquivo" method="POST" enctype="multipart/form-data">
-                                        <input th:type="hidden" name="username" th:value="${usuario.username}">
-                                        <input th:type="hidden" name="password" th:value="${usuario.senha}">
-                                        <div class="modal-body">
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                        <span class="input-group-text"
-                                                              id="inputGroupFileAddon01">Up!</span>
-                                                </div>
-                                                <div class="custom-file">
-                                                    <input type="file" class="custom-file-input"
-                                                           id="inputGroupFile01"
-                                                           aria-describedby="inputGroupFileAddon01" name="arquivo">
-                                                    <label class="custom-file-label" for="inputGroupFile01">Escolha
-                                                        um Arquivo</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                                                Fechar
-                                            </button>
-                                            <button type="submit" class="btn btn-primary">Salvar</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-
-                    </li>
-                    <li class="list-group-item">
-                        <form action="/remove" th:object="${usuario}" method="POST">
-                            <input type="hidden" th:field="*{username}" th:value="${usuario.username}"/>
-                            <button type="submit" class="btn btn-danger"
-                                    onclick="return confirm('Quer mesmo apagar sua conta? :(');">
-                                Deletar conta
-                            </button>
+<div id="conteudo" class="col table-responsive bg-dark">
+    <table class="table table-sm table-striped table-hover table-dark">
+        <thead class="thead-light">
+        <th scope="col">#</th>
+        <th scope="col">Nome do Arquivo</th>
+        <th scope="col">Extensão</th>
+        <th scope="col">Destinatario</th>
+        <th scope="col">Baixar</th>
+        </thead>
+        <tbody>
+            <div th:if="${lista.size() > 0}">
+                <tr th:each="arquivo, itStat : ${lista}" th:start="1">
+                    <td th:text="${itStat.index + 1}">1</td>
+                    <td th:text="${arquivo.getNome()}">Arquivo de texto</td>
+                    <td th:text="${arquivo.getType()}">txt</td>
+                    <td th:text="${arquivo.getDono()}">Dono</td>
+                    <td>
+                        <form action="http://localhost:9000/usuario/parar_compartilhamento" method="POST">
+                            <input type="hidden" name="nomeArquivo" th:value="${arquivo.getNomeInteiro()}">
+                            <input type="hidden" name="owner" th:value="${usuario.getUsername()}">
+                            <input type="hidden" name="destinatario" th:value="${arquivo.getDono()}">
+                            <button type="submit" class="btn btn-sm btn-outline-primary">Parar Compartilhamento</button>
                         </form>
-                    </li>
-                    <li class="list-group-item">Seguidores</li>
-                </ul>
-                <div class="card-body">
-                    <ul class="list-group list-unstyled">
-                        <li>
-                            <form th:action="'/usuario/' + ${usuario.getUsername()} + '/compartilhado'" method="POST">
-                                <button type="submit" class="btn btn-link card-link">Compartilhados comigo</button>
-                            </form>
-                        </li>
-                        <li>
-                            <form th:action="'/usuario/' + ${usuario.getUsername()} + '/compartilhei'" method="POST">
-                                <button type="submit" class="btn btn-link card-link">Compartilhei</button>
-                            </form>
-                        </li>
-                    </ul>
-                </div>
+                    </td>
+                </tr>
             </div>
-            <div class="col table-responsive bg-dark">
-                <table class="table table-sm table-striped table-hover table-dark">
-                    <thead class="thead-light">
-                    <th scope="col">#</th>
-                    <th scope="col">Nome do Arquivo</th>
-                    <th scope="col">Extensão</th>
-                    <th scope="col">Destinatario</th>
-                    <th scope="col">Baixar</th>
-                    </thead>
-                    <tbody>
-                    <div th:if="${lista.size() > 0}">
-                        <tr th:each="arquivo, itStat : ${lista}" th:start="1">
-                            <td th:text="${itStat.index + 1}">1</td>
-                            <td th:text="${arquivo.getNome()}">Arquivo de texto</td>
-                            <td th:text="${arquivo.getType()}">txt</td>
-                            <td th:text="${arquivo.getDono()}">Dono</td>
-                            <td>
-                                <form action="http://localhost:9000/usuario/parar_compartilhamento" method="POST">
-                                    <input type="hidden" name="nomeArquivo" th:value="${arquivo.getNomeInteiro()}">
-                                    <input type="hidden" name="owner" th:value="${usuario.getUsername()}">
-                                    <input type="hidden" name="destinatario" th:value="${arquivo.getDono()}">
-                                    <button type="submit" class="btn btn-sm btn-outline-primary">Parar Compartilhamento</button>
-                                </form>
-                            </td>
-                        </tr>
-                    </div>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+        </tbody>
+    </table>
 </div>
-
 </body>
 </html>
 
