@@ -12,6 +12,7 @@ import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -71,14 +72,21 @@ public class FtpUtil {
 
     public static String baixaArquivo(String nomeArquivo, String username, String password) {
         FTPClient ftpClient = getFtpClient(username, password);
+        File file = new File(System.getProperty("user.dir") + "/temp/");
+        boolean diretorioExiste = file.exists();
+        if (!diretorioExiste) {
+                diretorioExiste = file.mkdir();
+        }
         String caminhoArquivoTemporario = System.getProperty("user.dir") + "/temp/" + nomeArquivo;
-        try {
-            FileOutputStream fos = new FileOutputStream(caminhoArquivoTemporario);
-            ftpClient.retrieveFile(nomeArquivo, fos);
-            desconecta(ftpClient);
-            logger.info(marker, "Arquivo {} de {} baixado com sucesso", nomeArquivo, username);
-        } catch (IOException e) {
-            logger.error(marker, "Erro ao baixar arquivo {} de {}", nomeArquivo, username);
+        if (diretorioExiste) {
+            try {
+                FileOutputStream fos = new FileOutputStream(caminhoArquivoTemporario);
+                ftpClient.retrieveFile(nomeArquivo, fos);
+                desconecta(ftpClient);
+                logger.info(marker, "Arquivo {} de {} baixado com sucesso", nomeArquivo, username);
+            } catch (IOException e) {
+                logger.error(marker, "Erro ao baixar arquivo {} de {}", nomeArquivo, username);
+            }
         }
 
         return nomeArquivo;
