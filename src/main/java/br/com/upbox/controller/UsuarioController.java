@@ -6,7 +6,7 @@ import br.com.upbox.models.Erro;
 import br.com.upbox.models.Usuario;
 import br.com.upbox.utils.FtpUtil;
 import br.com.upbox.utils.UsuarioControllerUtil;
-import com.mongodb.BasicDBObject;
+import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
@@ -19,7 +19,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Controller
 public class UsuarioController {
@@ -79,19 +78,15 @@ public class UsuarioController {
        return "redirect:/usuario/" + username;
     }
 
-    //    TODO arrumar esse metodo desgraçado pra fazer ele funcionar! -- Set ta vazio!
     @PostMapping("/usuario/{username}/compartilhado")
     public ModelAndView listaCompartilhamento(@PathVariable("username") String username) {
         ModelAndView view = new ModelAndView("lista_compartilhados");
         Usuario usuario = UsuarioControllerUtil.buscaUsuario(username);
-        String s = UsuarioControllerUtil.preparaJsonString(usuario);
-        System.out.println(s);
-        Set<BasicDBObject> set = usuario.getArquivosCompartilhados();
-        System.out.println(set.isEmpty());
-        List<ArquivoCompartilhado> lista = new ArrayList<>();
-        set.forEach(b -> lista.add(new ArquivoCompartilhado(b)));
-        lista.forEach(a -> System.out.println("Arquivo compartilhado: " + a.getNome()));
-        view.addObject("lista", lista);
+        List<Document> lista = usuario.getCompartilhadosComigo();
+        List<ArquivoCompartilhado> listaArquivo = new ArrayList<>();
+        lista.forEach(b -> listaArquivo.add(new ArquivoCompartilhado(b)));
+        listaArquivo.forEach(a -> System.out.println("Arquivo compartilhado: " + a.getNome()));
+        view.addObject("lista", listaArquivo);
         view.addObject(USUARIO, usuario);
         return view;
     }

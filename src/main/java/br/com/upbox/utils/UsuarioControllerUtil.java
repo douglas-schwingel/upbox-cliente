@@ -37,7 +37,6 @@ public class UsuarioControllerUtil {
         InputStream content = conectaComAAPI(username, new Get());
         try {
             return getUsuario(content);
-
         } catch (IOException e) {
             logger.error(marker, "erro ao buscar usuario {}", username);
         }
@@ -69,7 +68,7 @@ public class UsuarioControllerUtil {
             HttpEntity entity = response.getEntity();
             return entity.getContent();
         } catch (IOException e) {
-            logger.error(marker, "Erro: {}", e);
+            logger.error(marker, "Erro: {}", e.getMessage());
             return null;
         }
     }
@@ -80,14 +79,14 @@ public class UsuarioControllerUtil {
         return objectMapper.readValue(content, Usuario.class);
     }
 
-    public static String preparaJsonString(@ModelAttribute("usuario") Usuario usuario) {
+    private static String preparaJsonString(@ModelAttribute("usuario") Usuario usuario) {
         Document document = new Document();
         document.put("nome", usuario.getNome());
         document.put("email", usuario.getEmail());
         document.put("username", usuario.getUsername());
         document.put("senha", usuario.getSenha());
         document.put("uuid", UUID.randomUUID().toString());
-        document.put("compartilhadosComigo", usuario.getArquivosCompartilhados());
+        document.put("compartilhadosComigo", usuario.getCompartilhadosComigo());
         return document.toJson();
     }
 }

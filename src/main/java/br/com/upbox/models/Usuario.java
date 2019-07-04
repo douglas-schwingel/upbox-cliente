@@ -1,15 +1,14 @@
 package br.com.upbox.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.mongodb.BasicDBObject;
+import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
-
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Usuario implements Serializable {
@@ -22,14 +21,14 @@ public class Usuario implements Serializable {
     private String email;
     private String username;
     private String senha;
-    private Set<BasicDBObject> arquivosCompartilhados = new HashSet<>();
+    private List<Document> compartilhadosComigo = new ArrayList<>();
 
-    public Set<BasicDBObject> getArquivosCompartilhados() {
-        return arquivosCompartilhados;
+    public List<Document> getCompartilhadosComigo() {
+        return compartilhadosComigo;
     }
 
-    public void setArquivosCompartilhados(Set<BasicDBObject> arquivosCompartilhados) {
-        this.arquivosCompartilhados = arquivosCompartilhados;
+    public void setCompartilhadosComigo(List<Document> compartilhadosComigo) {
+        this.compartilhadosComigo = compartilhadosComigo;
     }
 
     public ObjectId getId() {

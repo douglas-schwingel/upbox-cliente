@@ -1,7 +1,7 @@
 package br.com.upbox.models;
 
-import com.mongodb.BasicDBObject;
 import org.apache.commons.io.FilenameUtils;
+import org.bson.Document;
 
 public class ArquivoCompartilhado {
 
@@ -10,7 +10,7 @@ public class ArquivoCompartilhado {
     private String formato;
     private String dono;
 
-    public ArquivoCompartilhado(BasicDBObject basic) {
+    public ArquivoCompartilhado(Document basic) {
         this.nomeInteiro = basic.getString("arquivo");
         this.nome = FilenameUtils.getBaseName(nomeInteiro);
         this.formato = FilenameUtils.getExtension(nomeInteiro);

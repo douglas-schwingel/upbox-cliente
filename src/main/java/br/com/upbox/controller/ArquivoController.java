@@ -6,17 +6,13 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
-import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -78,13 +74,6 @@ public class ArquivoController {
                 logger.error(ex.getMessage());
             }
         }
-    }
-
-    @PostMapping("/lista_compartilhados")
-    public ModelAndView listarCompartilhados(@RequestParam("username") String username) {
-        ModelAndView view = new ModelAndView("forward:localhost:9000/usuario/compartilhados");
-        view.addObject("username", username);
-        return view;
     }
 
 }
