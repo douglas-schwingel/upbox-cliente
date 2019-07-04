@@ -6,13 +6,20 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.net.http.HttpResponse;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Controller
 public class ArquivoController {
@@ -46,17 +53,31 @@ public class ArquivoController {
         }
         return "redirect:/usuario/" + username;
     }
-//TODO arrumar o download pra que realmente baixe os arquivos
+
     @PostMapping("/download")
     public ModelAndView baixarArquivo(@RequestParam("nomeArquivo") String nomeArquivo,
                               @RequestParam("username") String username,
                               @RequestParam("password") String password) {
         String arquivoTemporario = FtpUtil.baixaArquivo(nomeArquivo, username, password);
         ModelAndView view = new ModelAndView("download");
-        File file = new File(arquivoTemporario);
-        view.addObject("arquivo", file);
+        view.addObject("arquivo", arquivoTemporario);
         view.addObject("nome", nomeArquivo);
         return view;
+    }
+
+    @PostMapping("/arquivo")
+    public void downloadArquivo(HttpServletResponse response, @RequestParam("arquivo") String nomeArquivo) {
+        String caminho = System.getProperty("user.dir") + "/temp";
+        Path filePath = Paths.get(caminho, nomeArquivo);
+        if (Files.exists(filePath)) {
+            response.addHeader("Content-Disposition", "attachment; filename=" + nomeArquivo);
+            try {
+                response.getOutputStream().flush();
+                Files.delete(filePath);
+            } catch (IOException ex) {
+                logger.error(ex.getMessage());
+            }
+        }
     }
 
     @PostMapping("/lista_compartilhados")

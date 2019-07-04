@@ -75,6 +75,7 @@ public class UsuarioController {
 
     @PostMapping("/search")
     public String search(@RequestParam("username") String username) {
+        if(username == null || username.length() < 1) throw new NullPointerException();
        return "redirect:/usuario/" + username;
     }
 

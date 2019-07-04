@@ -9,9 +9,10 @@
     <h1 class="display-4" th:text="${nome}">Bem-Vindo</h1>
     <hr class="my-4">
     <p th:text="'Você está prestes a baixar o arquivo: ' + ${nome}">Texto</p>
-        <a th:href="${arquivo}" download>
-            <button class="btn btn-outline-primary">Clique aqui para baixar</button>
-        </a>
+    <form action="/arquivo" method="POST">
+        <input type="hidden" name="arquivo" th:value="${arquivo}">
+        <button type="submit" class="btn btn-outline-primary">Clique aqui para baixar</button>
+    </form>
 </div>
 </body>
 

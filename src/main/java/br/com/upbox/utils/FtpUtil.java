@@ -81,7 +81,7 @@ public class FtpUtil {
             logger.error(marker, "Erro ao baixar arquivo {} de {}", nomeArquivo, username);
         }
 
-        return "/temp/" + nomeArquivo;
+        return nomeArquivo;
     }
 
 
